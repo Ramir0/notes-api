@@ -30,12 +30,12 @@ jobs:
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
+        if: (!cancelled())
         with:
           files: |
-            **/build/test-results/**/*.xml
-            **/build/test-results/**/*.trx
-            **/build/test-results/**/*.json
+            test-results/**/*.xml
+            test-results/**/*.trx
+            test-results/**/*.json
 
       - name: Generate Code Coverage Report
         run: gradle jacocoTestReport
