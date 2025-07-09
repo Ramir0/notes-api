@@ -1,0 +1,30 @@
+# Development Profile Configuration
+spring:
+  # MongoDB Configuration for Development
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/notesdb_dev
+      auto-index-creation: true
+
+  # DevTools Configuration
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+
+  # Logging Configuration for Development
+  logging:
+    level:
+      dev.amir.notes: DEBUG
+      org.springframework.data.mongodb: DEBUG
+      org.springframework.web: DEBUG
+      reactor.netty: DEBUG
+      root: INFO
+
+# Server Configuration for Development
+server:
+  port: 8080
+  error:
+    include-stacktrace: always
+    include-message: always

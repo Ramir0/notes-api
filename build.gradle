@@ -1,0 +1,74 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version "${springBootPluginVersion}"
+	id 'io.spring.dependency-management' version "${springDependencyManagementPluginVersion}"
+    id 'jacoco'
+}
+
+group = 'dev.amir.notes'
+version = "${appVersion}"
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// Spring Boot WebFlux Starter
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	// Spring Boot Data MongoDB Reactive
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+
+	// Validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// Optional: DevTools for development
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// Lombok for reducing boilerplate code
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// Testing dependencies
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+    if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+        if (System.getProperty("os.arch").contains("aarch64") || System.getProperty("os.arch").contains("arm")) {
+            testImplementation "io.netty:netty-resolver-dns-native-macos:${nettyResolverDnsVersion}:osx-aarch_64"
+        } else {
+            testImplementation "io.netty:netty-resolver-dns-native-macos:${nettyResolverDnsVersion}:osx-x86_64"
+        }
+    }
+
+	// OpenAPI documentation
+	implementation "org.springdoc:springdoc-openapi-starter-webflux-ui:${openApiWebfluxVersion}"
+}
+
+jacoco {
+    toolVersion = "${jacocoVersion}"
+}
+
+jacocoTestReport {
+    description = "Generate Jacoco coverage reports for the test build."
+    reports {
+        html.required.set(true)
+        xml.required.set(true)
+    }
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+    jvmArgs("-XX:+EnableDynamicAgentLoading")
+}

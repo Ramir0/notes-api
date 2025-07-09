@@ -1,0 +1,56 @@
+# Spring Boot Notes API Configuration
+spring:
+  application:
+    name: Notes
+  profiles:
+    active: dev
+
+  # MongoDB Configuration
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/notesdb
+      auto-index-creation: true
+
+  # WebFlux Configuration
+  webflux:
+    problemdetails:
+      enabled: true
+
+  # Jackson Configuration for JSON processing
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    time-zone: UTC
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+
+  # Logging Configuration
+  logging:
+    level:
+      dev.amir.notes: INFO
+      org.springframework.data.mongodb: INFO
+      reactor.netty: INFO
+    pattern:
+      console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+      file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Server Configuration
+server:
+  port: 8080
+  netty:
+    connection-timeout: 5s
+    idle-timeout: 15s
+
+# Swagger/OpenAPI Configuration
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html # Custom path for the Swagger UI
+    disable-swagger-default-url: true # Prevents loading default Petstore example
+    doc-expansion: none # Controls how operations are expanded (none, list, full)
+    operationsSorter: alpha # Sorts operations alphabetically
+    tagsSorter: alpha # Sorts tags alphabetically
+    display-request-duration: true # Displays the time taken for requests
+  show-actuator: true
+  packages-to-scan: dev.amir.notes.notes.presentation.controllers # Optional: Specify packages to scan for controllers
+  paths-to-match: /** # Optional: Specify paths to include in documentation
