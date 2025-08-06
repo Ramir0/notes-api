@@ -10,8 +10,7 @@ services:
     volumes:
       - mongodb_data:/data/db
     environment:
-    # Optional: If you want to set up authentication
-      MONGO_INITDB_DATABASE: notesdb_dev # This sets the default database when you connect
+      MONGO_INITDB_DATABASE: notesdb_dev
     healthcheck:
       test: |
         echo "try { rs.status() } catch (err) { rs.initiate() }" | mongosh --quiet
